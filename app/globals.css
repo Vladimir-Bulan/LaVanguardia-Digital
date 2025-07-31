@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary-black: #1a1a1a;
+    --secondary-black: #2d2d2d;
+    --accent-gold: #d4af37;
+    --accent-red: #c41e3a;
+    --text-gray: #4a4a4a;
+    --light-gray: #f8f9fa;
+    --border-gray: #e1e5e9;
+    --white: #ffffff;
+    --shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.7;
+    color: var(--primary-black);
+    background: var(--white);
+    font-size: 16px;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  .font-playfair {
+    font-family: var(--font-playfair), serif;
+  }
+
+  .font-crimson {
+    font-family: var(--font-crimson), serif;
+  }
+
+  .font-inter {
+    font-family: var(--font-inter), sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-primary-black {
+    color: var(--primary-black);
+  }
+
+  .text-secondary-black {
+    color: var(--secondary-black);
+  }
+
+  .text-accent-gold {
+    color: var(--accent-gold);
+  }
+
+  .text-accent-red {
+    color: var(--accent-red);
+  }
+
+  .text-text-gray {
+    color: var(--text-gray);
+  }
+
+  .bg-primary-black {
+    background-color: var(--primary-black);
+  }
+
+  .bg-secondary-black {
+    background-color: var(--secondary-black);
+  }
+
+  .bg-accent-gold {
+    background-color: var(--accent-gold);
+  }
+
+  .bg-accent-red {
+    background-color: var(--accent-red);
+  }
+
+  .bg-light-gray {
+    background-color: var(--light-gray);
+  }
+
+  .border-border-gray {
+    border-color: var(--border-gray);
+  }
+
+  .shadow-custom {
+    box-shadow: var(--shadow);
+  }
+
+  .shadow-hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  .fade-in {
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Smooth header transitions - Optimized */
+  .header-smooth {
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Prevent layout shift during transitions */
+  .header-container {
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Optimized backdrop blur */
+  .backdrop-blur-optimized {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Smooth scrolling with better performance */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+
+    * {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--light-gray);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #e6c547;
+  }
+
+  /* Prevent text selection on navigation elements */
+  .nav-item {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Smooth font rendering */
+  .font-smooth {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Enhanced responsive typography */
+@media (max-width: 640px) {
+  .font-playfair.text-6xl {
+    font-size: 2.5rem;
+    line-height: 1.1;
+  }
+
+  .font-playfair.text-5xl {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .font-playfair.text-4xl {
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 480px) {
+  .font-playfair.text-6xl {
+    font-size: 2rem;
+  }
+
+  .font-playfair.text-5xl {
+    font-size: 1.75rem;
+  }
+}
+
+/* Performance optimizations */
+@media (min-width: 1024px) {
+  .header-desktop {
+    contain: layout style paint;
+  }
+}
