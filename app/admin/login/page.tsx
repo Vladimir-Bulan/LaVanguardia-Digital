@@ -29,7 +29,7 @@ export default function AdminLoginPage() {
       if (result?.error) {
         setError("Email o contraseña incorrectos")
       } else {
-        router.push("/")
+        router.push("/admin/dashboard")
         router.refresh()
       }
     } catch (error) {
