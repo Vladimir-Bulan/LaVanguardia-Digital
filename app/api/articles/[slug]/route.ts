@@ -60,9 +60,10 @@ export async function GET(
 }
 
 // PUT: Actualizar artículo
+// PUT: Actualizar artículo
 export async function PUT(
-    req: Request,
-    { params }: { params: { slug: string } }
+    request: Request,
+    { params }: { params: Promise<{ slug: string }> }
 ) {
     try {
         const session = await getServerSession(authOptions)
@@ -74,10 +75,11 @@ export async function PUT(
             )
         }
 
-        const body = await req.json()
+        const body = await request.json()  // ← Cambiar req por request
 
+        const { slug } = await params
         const article = await prisma.article.update({
-            where: { slug: params.slug },
+            where: { slug },
             data: body,
             include: {
                 author: {
@@ -99,37 +101,6 @@ export async function PUT(
         console.error("Error al actualizar artículo:", error)
         return NextResponse.json(
             { error: "Error al actualizar artículo" },
-            { status: 500 }
-        )
-    }
-}
-
-// DELETE: Eliminar artículo
-export async function DELETE(
-    req: Request,
-    { params }: { params: { slug: string } }
-) {
-    try {
-        const session = await getServerSession(authOptions)
-
-        if (!session) {
-            return NextResponse.json(
-                { error: "No autorizado" },
-                { status: 401 }
-            )
-        }
-
-        await prisma.article.delete({
-            where: { slug: params.slug }
-        })
-
-        return NextResponse.json({
-            message: "Artículo eliminado exitosamente"
-        })
-    } catch (error) {
-        console.error("Error al eliminar artículo:", error)
-        return NextResponse.json(
-            { error: "Error al eliminar artículo" },
             { status: 500 }
         )
     }
