@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Navigation from "./navigation"
 import Link from "next/link"
+import { UserProfile } from "@/components/user/user-profile"
 
 export default function Header() {
   const [scrollY, setScrollY] = useState(0)
@@ -11,11 +12,10 @@ export default function Header() {
   const handleScroll = useCallback(() => {
     const currentScrollY = window.pageYOffset || document.documentElement.scrollTop
     setScrollY(currentScrollY)
-    setIsScrolled(currentScrollY > 50) // Threshold más bajo para mejor UX
+    setIsScrolled(currentScrollY > 50)
   }, [])
 
   useEffect(() => {
-    // Throttle scroll events para mejor performance
     let ticking = false
 
     const throttledScroll = () => {
@@ -35,6 +35,11 @@ export default function Header() {
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-border-gray sticky top-0 z-50 shadow-sm transition-all duration-500 ease-out">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* User Profile - Posicionado absolutamente arriba a la derecha */}
+        <div className="absolute top-4 right-4 z-10">
+          <UserProfile />
+        </div>
+
         <div
           className="text-center transition-all duration-500 ease-out"
           style={{
