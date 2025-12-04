@@ -1,48 +1,21 @@
 "use client"
 
 import type React from "react"
-
 import { useRouter } from "next/navigation"
 
-const trendingArticles = [
-  {
-    id: 1,
-    slug: "revolucion-digital-argentina",
-    title: "Revolución Digital: Argentina Lidera la Transformación Tecnológica",
-    category: "Tecnología",
-    views: "15,234 lecturas",
-  },
-  {
-    id: 2,
-    slug: "inflacion-desciende-minimo",
-    title: "Inflación Desciende al Mínimo de los Últimos Cinco Años",
-    category: "Economía",
-    views: "12,891 lecturas",
-  },
-  {
-    id: 3,
-    slug: "terapia-genica-cancer-argentina",
-    title: "Terapia Génica Argentina Contra el Cáncer",
-    category: "Ciencia",
-    views: "11,456 lecturas",
-  },
-  {
-    id: 4,
-    slug: "messi-retiro-futbol-internacional",
-    title: "Messi Anuncia su Retiro del Fútbol Internacional",
-    category: "Deportes",
-    views: "9,823 lecturas",
-  },
-  {
-    id: 5,
-    slug: "buenos-aires-capital-mundial-libro",
-    title: "Buenos Aires Elegida Capital Mundial del Libro",
-    category: "Cultura",
-    views: "8,234 lecturas",
-  },
-]
+interface Article {
+  id: string
+  slug: string
+  title: string
+  category: string
+  views: number
+}
 
-export default function TrendingSidebar() {
+interface TrendingSidebarProps {
+  articles: Article[]
+}
+
+export default function TrendingSidebar({ articles }: TrendingSidebarProps) {
   const router = useRouter()
 
   const handleClick = (slug: string) => {
@@ -51,10 +24,9 @@ export default function TrendingSidebar() {
 
   const handleCategoryClick = (e: React.MouseEvent, category: string) => {
     e.stopPropagation()
-    // Mapeo correcto de categorías a rutas
     const categoryRoutes: { [key: string]: string } = {
       Deportes: "/deportes",
-      Ciencia: "/tecnologia", // Ciencia va a tecnología por ahora
+      Ciencia: "/tecnologia",
       Tecnología: "/tecnologia",
       Cultura: "/cultura",
       Economía: "/economia",
@@ -67,6 +39,10 @@ export default function TrendingSidebar() {
     router.push(route)
   }
 
+  const formatViews = (views: number) => {
+    return views.toLocaleString('es-AR') + ' lecturas'
+  }
+
   return (
     <div className="bg-light-gray p-4 sm:p-6 lg:p-8 rounded-lg h-fit">
       <h2 className="font-playfair text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 lg:mb-8 text-primary-black text-center relative">
@@ -75,7 +51,7 @@ export default function TrendingSidebar() {
       </h2>
 
       <div className="space-y-3 sm:space-y-4 lg:space-y-6">
-        {trendingArticles.map((article, index) => (
+        {articles.map((article, index) => (
           <article
             key={article.id}
             className="py-3 sm:py-4 lg:py-6 border-b border-border-gray flex gap-3 sm:gap-4 transition-all duration-300 cursor-pointer hover:bg-white hover:-mx-2 sm:hover:-mx-4 hover:px-2 sm:hover:px-4 hover:rounded-lg last:border-b-0"
@@ -96,7 +72,7 @@ export default function TrendingSidebar() {
                   {article.category}
                 </button>
                 <span>•</span>
-                <span>{article.views}</span>
+                <span>{formatViews(article.views)}</span>
               </div>
             </div>
           </article>
