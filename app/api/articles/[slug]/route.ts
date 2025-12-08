@@ -5,12 +5,13 @@ import { authOptions } from "@/lib/auth"
 
 // GET: Obtener artículo por slug
 export async function GET(
-    req: Request,
-    { params }: { params: { slug: string } }
+    request: Request,
+    { params }: { params: Promise<{ slug: string }> }
 ) {
     try {
+        const { slug } = await params
         const article = await prisma.article.findUnique({
-            where: { slug: params.slug },
+            where: { slug },
             include: {
                 author: {
                     select: {
@@ -60,7 +61,6 @@ export async function GET(
 }
 
 // PUT: Actualizar artículo
-// PUT: Actualizar artículo
 export async function PUT(
     request: Request,
     { params }: { params: Promise<{ slug: string }> }
@@ -75,7 +75,7 @@ export async function PUT(
             )
         }
 
-        const body = await request.json()  // ← Cambiar req por request
+        const body = await request.json()
 
         const { slug } = await params
         const article = await prisma.article.update({
@@ -101,6 +101,38 @@ export async function PUT(
         console.error("Error al actualizar artículo:", error)
         return NextResponse.json(
             { error: "Error al actualizar artículo" },
+            { status: 500 }
+        )
+    }
+}
+
+// DELETE: Eliminar artículo
+export async function DELETE(
+    request: Request,
+    { params }: { params: Promise<{ slug: string }> }
+) {
+    try {
+        const session = await getServerSession(authOptions)
+
+        if (!session) {
+            return NextResponse.json(
+                { error: "No autorizado" },
+                { status: 401 }
+            )
+        }
+
+        const { slug } = await params
+        await prisma.article.delete({
+            where: { slug }
+        })
+
+        return NextResponse.json({
+            message: "Artículo eliminado exitosamente"
+        })
+    } catch (error) {
+        console.error("Error al eliminar artículo:", error)
+        return NextResponse.json(
+            { error: "Error al eliminar artículo" },
             { status: 500 }
         )
     }
