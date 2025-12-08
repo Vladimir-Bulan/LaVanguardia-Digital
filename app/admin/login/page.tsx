@@ -27,9 +27,22 @@ export default function AdminLoginPage() {
       })
 
       if (result?.error) {
-        setError("Email o contraseña incorrectos")
-      } else {
-        router.push("/admin/dashboard")
+        setError("Credenciales inválidas. Verifica tu email y contraseña.")
+        return
+      }
+
+      if (result?.ok) {
+        // Obtener la sesión después del login
+        const response = await fetch("/api/auth/session")
+        const session = await response.json()
+
+        // Redirigir según el rol
+        if (session?.user?.role === "ADMIN") {
+          router.push("/admin/dashboard")
+        } else {
+          router.push("/")
+        }
+
         router.refresh()
       }
     } catch (error) {

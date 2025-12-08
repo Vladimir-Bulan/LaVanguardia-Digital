@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 import ArticleLayout from "@/components/articles/article-layout"
 import ArticleContent from "@/components/articles/article-content"
 import ArticleSidebar from "@/components/articles/article-sidebar"
+import CommentForm from "@/components/comments/comment-form"
+import CommentsList from "@/components/comments/comments-list"
 
 interface ArticlePageProps {
   params: Promise<{
@@ -126,6 +128,21 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
         <div className="xl:col-span-3">
           <ArticleContent article={article} />
+
+          {/* Sección de Comentarios */}
+          <div className="mt-12 border-t border-gray-200 pt-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-8">
+              Comentarios
+            </h2>
+
+            {/* Formulario para comentar */}
+            <div className="mb-12">
+              <CommentForm articleId={article.id} />
+            </div>
+
+            {/* Lista de comentarios */}
+            <CommentsList comments={article.comments} />
+          </div>
         </div>
         <div className="xl:col-span-1">
           <ArticleSidebar article={article} />
